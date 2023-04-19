@@ -1,1 +1,0 @@
-auth_token = "YOUR AUTH TOKEN HERE"
