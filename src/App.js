@@ -26,8 +26,8 @@ const App = () => {
 
   const generate = async () => {
     updateLoading(true);
-    //const result = await axios.get(`http://127.0.0.1:3000/?prompt=${prompt}+Nprompt=${Nprompt}+inference=${inference}+width=${width}+height=${height}`);
-    const result = await axios.get(`https://a04b-35-247-4-36.ngrok-free.app/?prompt=${prompt}+Nprompt=${Nprompt}+inference=${inference}+width=${width}+height=${height}`);
+    const result = await axios.get(`http://127.0.0.1:3000/?prompt=${prompt}+Nprompt=${Nprompt}+inference=${inference}+width=${width}+height=${height}`);
+    //const result = await axios.get(`https://a04b-35-247-4-36.ngrok-free.app/?prompt=${prompt}+Nprompt=${Nprompt}+inference=${inference}+width=${width}+height=${height}`);
     console.log(result);
     updateImage(result.data);
     updateLoading(false);
