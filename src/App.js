@@ -26,7 +26,7 @@ const App = () => {
 
   const generate = async () => {
     updateLoading(true);
-    const result = await axios.get(`http://127.0.0.1:3000/?prompt=${prompt}+Nprompt=${Nprompt}+inference=${inference}+width=${width}+height=${height}`);
+    const result = await axios.get(`http://127.0.0.1:3000/?prompt=${prompt}&Nprompt=${Nprompt}&inference=${inference}&width=${width}&height=${height}`);
     console.log(result);
     updateImage(result.data);
     updateLoading(false);
@@ -43,6 +43,9 @@ const App = () => {
         </Text>
         <Wrap marginBottom={"10px"} >
           <Input
+            focusBorderColor='lime'
+            minLength={'3'}
+            maxLength={'255'}
             left={'10px'}
             value={prompt}
             variant={'filled'}
@@ -57,6 +60,9 @@ const App = () => {
             Generate
           </Button>
           <Input
+            focusBorderColor='lime'
+            minLength={'3'}
+            maxLength={'255'}
             left={'10px'}
             value={Nprompt}
             variant={'filled'}
@@ -67,7 +73,10 @@ const App = () => {
         </Wrap>
 
         <Wrap className="btn" marginBottom={"10px"}>
-          <Input 
+          <Input
+            focusBorderColor='lime'
+            minLength={'2'} 
+            maxLength={'3'}
             left={'10px'}
             margin={"5px"}
             value={inference}
@@ -76,6 +85,9 @@ const App = () => {
             width={"110px"} 
           ></Input>
           <Input
+            focusBorderColor='lime'
+            minLength={'3'}
+            maxLength={'4'}
             left={'10px'}
             margin={"5px"}
             value={width}
@@ -84,6 +96,9 @@ const App = () => {
             width={"110px"} 
           ></Input>
           <Input
+            focusBorderColor='lime'
+            minLength={'3'}
+            maxLength={'4'}
             left={'10px'}
             margin={"5px"}
             value={height}
@@ -96,7 +111,7 @@ const App = () => {
         {loading ? (
           <Stack>
             <SkeletonCircle />
-            <SkeletonText width={'425px'}/>
+            <SkeletonText width={'400px'}/>
           </Stack>
         ) : image ? (
           //<Image src={`data:image/png;base64,${image}`} boxShadow="lg" />
