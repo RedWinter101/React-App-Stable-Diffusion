@@ -1,0 +1,8 @@
+!pip install "uvicorn[standard]"
+!pip install fastapi 
+!pip install pybase64 
+!pip install Pillow
+!pip install diffusers  
+!pip install pip install git+https://github.com/huggingface/transformers
+!pip install scipy ftfy accelerate
+!pip install torch
