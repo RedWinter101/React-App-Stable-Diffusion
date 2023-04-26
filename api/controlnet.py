@@ -39,10 +39,6 @@ controlnet = ControlNetModel.from_pretrained("lllyasviel/sd-controlnet-canny", t
 pipe = StableDiffusionControlNetPipeline.from_pretrained(model_id, controlnet=controlnet, torch_dtype=torch.float16)
 pipe.to(device)
 generator = torch.manual_seed(0)
-"""pipe.scheduler = UniPCMultistepScheduler.from_config(pipe.scheduler.config)
-
-# this command loads the individual model components on GPU on-demand.
-pipe.enable_model_cpu_offload()"""
 
 def image_grid(imgs, rows, cols):
     assert len(imgs) == rows*cols
@@ -57,7 +53,7 @@ def image_grid(imgs, rows, cols):
 
 """@app.post("/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
-    return {"filename": file.filename}"""
+    return {"filename":file.filename}"""
 
 @app.get("/")
 def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int):
@@ -76,8 +72,6 @@ def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int)
     image = np.concatenate([image, image, image], axis=2)
     canny_image = Image.fromarray(image)
 
-   
-
     """response = requests.get(url)
     init_image = Image.open(BytesIO(response.content)).convert("RGB")
     init_image = init_image.resize((width, height))"""
@@ -87,7 +81,7 @@ def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int)
                      negative_prompt=Nprompt, guidance_scale=8.5, num_inference_steps=inference, 
                      width=width, height=height, generator=generator,
                      controlnet_conditioning_scale=1.00).images
-
+    canny_image.show()
     init_image.show()
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
@@ -96,8 +90,12 @@ def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int)
     buffer = BytesIO()
     grid.save(buffer, format="PNG")
     imgstr = base64.b64encode(buffer.getvalue())
-
     return Response(content=imgstr, media_type="image/png")"""
+
+@app.post('/upload/file')
+async def upload_file(file: UploadFile):
+    path = file.filename
+    return {'file': path}   
     
 import nest_asyncio
 from pyngrok import ngrok
