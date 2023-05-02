@@ -51,18 +51,18 @@ def image_grid(imgs, rows, cols):
         grid.paste(img, box=(i%cols*w, i//cols*h))
     return grid
 
-"""@app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile = File(...)):
-    return {"filename":file.filename}"""
+@app.post("/")
+async def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int, file: UploadFile = File(...)):
 
-@app.get("/")
-def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int):
+    file_b = await file.read()
+    imgs = Image.open(BytesIO(file_b))
+    imgs.show()
 
-    url = "https://raw.githubusercontent.com/RedWinter101/React-App-Stable-Diffusion/main/api/test2.png"
+    """url = "https://raw.githubusercontent.com/RedWinter101/React-App-Stable-Diffusion/main/api/test2.png"
     response = requests.get(url)
-    init_image = Image.open(BytesIO(response.content)).convert("RGB")
+    init_image = Image.open(BytesIO(response.content)).convert("RGB")"""
 
-    image = np.array(init_image)
+    image = np.array(imgs)
 
     low_threshold = 100
     high_threshold = 200
@@ -81,8 +81,9 @@ def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int)
                      negative_prompt=Nprompt, guidance_scale=8.5, num_inference_steps=inference, 
                      width=width, height=height, generator=generator,
                      controlnet_conditioning_scale=1.00).images
+                     
     canny_image.show()
-    init_image.show()
+    imgs.show()
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
     
@@ -93,9 +94,11 @@ def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int)
     return Response(content=imgstr, media_type="image/png")"""
 
 @app.post('/upload/file')
-async def upload_file(file: UploadFile):
-    path = file.filename
-    return {'file': path}   
+async def create_upload_file(file: UploadFile = File(...)):
+    file_b = await file.read()
+    img = Image.open(BytesIO(file_b))
+    img.show()
+    return {"filename":file.filename}, file
     
 import nest_asyncio
 from pyngrok import ngrok
