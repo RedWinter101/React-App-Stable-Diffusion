@@ -58,10 +58,6 @@ async def generate(prompt: str, Nprompt: str, inference: int, width: int, height
     imgs = Image.open(BytesIO(file_b))
     imgs.show()
 
-    """url = "https://raw.githubusercontent.com/RedWinter101/React-App-Stable-Diffusion/main/api/test2.png"
-    response = requests.get(url)
-    init_image = Image.open(BytesIO(response.content)).convert("RGB")"""
-
     image = np.array(imgs)
 
     low_threshold = 100
@@ -72,9 +68,9 @@ async def generate(prompt: str, Nprompt: str, inference: int, width: int, height
     image = np.concatenate([image, image, image], axis=2)
     canny_image = Image.fromarray(image)
 
-    """response = requests.get(url)
+    response = requests.get(url)
     init_image = Image.open(BytesIO(response.content)).convert("RGB")
-    init_image = init_image.resize((width, height))"""
+    init_image = init_image.resize((width, height))
 
     with autocast(device): 
         image = pipe(prompt, image=canny_image, num_images_per_prompt=2, 
@@ -86,12 +82,6 @@ async def generate(prompt: str, Nprompt: str, inference: int, width: int, height
     imgs.show()
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
-    
-    """grid.save(f"test.png")
-    buffer = BytesIO()
-    grid.save(buffer, format="PNG")
-    imgstr = base64.b64encode(buffer.getvalue())
-    return Response(content=imgstr, media_type="image/png")"""
 
 @app.post('/upload/file')
 async def create_upload_file(file: UploadFile = File(...)):
