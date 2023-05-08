@@ -3,7 +3,7 @@
 !pip install "uvicorn[standard]"
 !pip install fastapi nest-asyncio pyngrok
 !pip install pybase64 
-!pip install Pillows
+!pip install Pillow
 !pip install diffusers  
 !pip install pip install git+https://github.com/huggingface/transformers
 !pip install scipy ftfy accelerate
