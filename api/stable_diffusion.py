@@ -65,7 +65,7 @@ def image_grid(imgs, rows, cols):
     return grid
 
 
-@app.get("/text-to-image")
+@app.get("/")
 def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int):
     with autocast(device): 
         image = pipe1(prompt, num_images_per_prompt=2, negative_prompt=Nprompt, 
@@ -76,7 +76,7 @@ def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int)
 
 
 @app.post("/img2img")
-async def generate(prompt: str, Nprompt: str, inference: int, width: int, height: int, file: UploadFile = File(...)):
+async def generate(prompt: str, Nprompt: str, inference: int, cfg_scale: float, width: int, height: int, file: UploadFile = File(...)):
 
     file_b = await file.read()
     imgs = Image.open(BytesIO(file_b))
@@ -87,7 +87,7 @@ async def generate(prompt: str, Nprompt: str, inference: int, width: int, height
     with autocast(device): 
         image = pipe2(prompt, image=image, strength=cfg_scale, num_images_per_prompt=2, 
                      negative_prompt=Nprompt, guidance_scale=8.5, num_inference_steps=inference).images
-    init_image.show()
+    imgs.show()
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
 
