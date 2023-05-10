@@ -54,8 +54,6 @@ model_id = "SG161222/Realistic_Vision_V1.3"
 pipe = StableDiffusionImg2ImgPipeline.from_pretrained(model_id, revision="main", torch_dtype=torch.float16)
 pipe.to(device)
 
-from google.colab import drive
-drive.mount('/content/gdrive')
 
 def image_grid(imgs, rows, cols):
     assert len(imgs) == rows*cols
@@ -68,30 +66,22 @@ def image_grid(imgs, rows, cols):
         grid.paste(img, box=(i%cols*w, i//cols*h))
     return grid
 
-@app.post("/")
-def upload_file(upload: UploadFile):
-  uploadf = upload
-  return uploadf
 
-@app.get("/")
-def generate(prompt: str, Nprompt: str, inference: int, cfg_scale: float, width: int, height: int):
-    url = "https://raw.githubusercontent.com/RedWinter101/React-App-Stable-Diffusion/main/api/Mountain-10.png"
-    response = requests.get(url)
-    init_image = Image.open(BytesIO(response.content)).convert("RGB")
-    init_image = init_image.resize((width, height))
+@app.post("/")
+async def generate_img2img(prompt: str, Nprompt: str, inference: int, cfg_scale: float, width: int, height: int, file: UploadFile = File(...)):
+
+    file_b = await file.read()
+    imgs = Image.open(BytesIO(file_b))
+    imgs.show()
+
+    image = np.array(imgs)
 
     with autocast(device): 
-        image = pipe(prompt, image=init_image, strength=cfg_scale, num_images_per_prompt=2, negative_prompt=Nprompt, guidance_scale=8.5, num_inference_steps=inference).images
-    init_image.show()
+        image = pipe2(prompt, image=image, strength=cfg_scale, num_images_per_prompt=2, 
+                     negative_prompt=Nprompt, guidance_scale=8.5, num_inference_steps=inference).images
+    imgs.show()
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
-    
-    grid.save(f"test.png")
-    buffer = BytesIO()
-    grid.save(buffer, format="PNG")
-    imgstr = base64.b64encode(buffer.getvalue())
-
-    return Response(content=imgstr, media_type="image/png")
   
 import nest_asyncio
 from pyngrok import ngrok
