@@ -83,17 +83,11 @@ async def generate(prompt: str, Nprompt: str, inference: int, width: int, height
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
 
-@app.post('/upload/file')
-async def create_upload_file(file: UploadFile = File(...)):
-    file_b = await file.read()
-    img = Image.open(BytesIO(file_b))
-    img.show()
-    return {"filename":file.filename}, file
     
 import nest_asyncio
 from pyngrok import ngrok
 import uvicorn
-!ngrok config add-authtoken 2OOjnLNtbhW4HOD69RcZtMloWbP_3Jm6hbLi3DN2StK9dZK37
+!ngrok config add-authtoken #NGROK Token
 ngrok_tunnel = ngrok.connect(8000)
 print('Public URL:', ngrok_tunnel.public_url)
 nest_asyncio.apply()
