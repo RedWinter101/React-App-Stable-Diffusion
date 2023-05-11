@@ -1,1 +1,2 @@
-This react application leverages the model trained by SG161222 to generate images using the Stable Diffusion Deep Learning model.
+This Stable Diffusion API leverages the model trained by SG161222 to generate images using the Stable Diffusion Deep Learning model.
+Fast-API and NGROK was used to host the Stable Diffusion API.
