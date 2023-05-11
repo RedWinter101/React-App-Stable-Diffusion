@@ -66,7 +66,6 @@ def image_grid(imgs, rows, cols):
         grid.paste(img, box=(i%cols*w, i//cols*h))
     return grid
 
-
 @app.post("/")
 async def generate_img2img(prompt: str, Nprompt: str, inference: int, cfg_scale: float, width: int, height: int, file: UploadFile = File(...)):
 
