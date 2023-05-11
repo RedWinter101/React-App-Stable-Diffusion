@@ -12,7 +12,6 @@
 !pip install opencv-contrib-python
 !pip install diffusers transformers git+https://github.com/huggingface/accelerate.git
 
-
 ###########################################
 
 from fastapi import FastAPI, Response, File, UploadFile
