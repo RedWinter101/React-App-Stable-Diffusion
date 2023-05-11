@@ -83,7 +83,6 @@ async def generate(prompt: str, Nprompt: str, inference: int, width: int, height
     grid = image_grid(image, rows=1, cols=2)
     grid.show()
 
-    
 import nest_asyncio
 from pyngrok import ngrok
 import uvicorn
